@@ -16,8 +16,7 @@ func display(path string, v reflect.Value) {
 		fmt.Printf("%s = invalid\n", path)
 	case reflect.Slice, reflect.Array:
 		for i := 0; i < v.Len(); i++ {
-			fieldPath := fmt.Sprintf("%s.%s", path, v.Type().Field(i).Name)
-			display(fieldPath, v.Field(i))
+			display(fmt.Sprintf("%s[%d]", path, i), v.Index(i))
 		}
 	case reflect.Struct:
 		for i := 0; i < v.NumField(); i++ {
