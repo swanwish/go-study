@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"time"
-
 	"os"
+	"reflect"
+	"time"
 
 	"github.com/swanwish/go-common/logs"
 	"github.com/swanwish/go-study/gopl.io/ch12"
@@ -67,4 +67,6 @@ func testDisplay() {
 	ch12.Display("strangeLove", strangeLove)
 
 	ch12.Display("os.Stderr", os.Stderr)
+
+	ch12.Display("rV", reflect.ValueOf(os.Stderr))
 }
