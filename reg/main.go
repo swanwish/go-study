@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"regexp"
 
 	"github.com/swanwish/go-common/logs"
@@ -54,12 +55,12 @@ func regexpMatch() {
 	//source = "13244820821HG74892109977HJA15200806084S11233240697hdgsfhah假发发货"
 	//pattern = `1[3|5|7|8|][\d]{9}` //匹配电话号码
 
-	source = "创1:2-3"
-	source = "创 1:2"
-	source = "创 1:2~2:3"
-	//logs.Debugf("The first character is %s", source[:1])
-	pattern = `^[\p{Han}]+`
-	pattern = `[\d]+(:[\d]+(-[\d]+)*)*(~([\d]+(:[\d]+(-[\d]+)*)*))*`
+	//source = "创1:2-3"
+	//source = "创 1:2"
+	//source = "创 1:2~2:3"
+	////logs.Debugf("The first character is %s", source[:1])
+	//pattern = `^[\p{Han}]+`
+	//pattern = `[\d]+(:[\d]+(-[\d]+)*)*(~([\d]+(:[\d]+(-[\d]+)*)*))*`
 
 	//source = "132@12.comGKGk15@163.cn200806084S11233240697hdgsfhah假发发货"
 	//pattern = `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*` //匹配电子邮箱
@@ -76,16 +77,40 @@ func regexpMatch() {
 	//匹配邮编  `[1-9][\d]5`
 	//匹配URL `[a-zA-z]+://[^\s]*`
 
-	reg = regexp.MustCompile(pattern)
-	strs := reg.FindAllString(source, -1)
-	for index, str := range strs {
-		logs.Debugf("The str %d is %s", index, str)
-	}
+	//reg = regexp.MustCompile(pattern)
+	//strs := reg.FindAllString(source, -1)
+	//for index, str := range strs {
+	//	logs.Debugf("The str %d is %s", index, str)
+	//}
 
 	//result := reg.FindAllStringSubmatch(source, -1)
 	//logs.Debugf("The result is: %v", result)
 
 	//fmt.Printf("%s\n", reg.FindAllString(source, -1))
+
+	pattern = `<img[^s]+src=("(.+)"|'(.+)'|(.+))[^/<]+(/>|</img>)`
+	pattern = `<img[^s]+src="(.+)"/>`
+	fileContent, err := ioutil.ReadFile("/Users/Stephen/Downloads/book_6/EPUB/120.xhtml")
+	if err != nil {
+		logs.Errorf("Failed to read file, the error is %v", err)
+		return
+	}
+	reg = regexp.MustCompile(pattern)
+
+	strContent := string(fileContent)
+	logs.Debugf("The file content is %s", strContent)
+	result := reg.FindAllSubmatchIndex(fileContent, -1) //.FindAllStringIndex(strContent, -1)
+	logs.Debugf("The result is %v", result)
+	for _, item := range result {
+		imgLine := strContent[item[0]:item[1]]
+		logs.Debugf("img line is: %s", imgLine)
+		matchItem := strContent[item[2]:item[3]]
+		logs.Debugf("match item: %s", matchItem)
+		//srcIndex := strings.Index(imgLine, `src="`)
+		//if srcIndex != -1 {
+		//
+		//}
+	}
 
 }
 func main() {
