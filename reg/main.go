@@ -89,8 +89,10 @@ func regexpMatch() {
 	//fmt.Printf("%s\n", reg.FindAllString(source, -1))
 
 	pattern = `<img[^s]+src=("(.+)"|'(.+)'|(.+))[^/<]+(/>|</img>)`
-	pattern = `<img[^s]+src="(.+)"/>`
-	fileContent, err := ioutil.ReadFile("/Users/Stephen/Downloads/book_6/EPUB/120.xhtml")
+	pattern = `<img.*src="(.+)"/>`
+	filePath := "/Users/Stephen/Downloads/1125/EPUB/1017.xhtml"
+	filePath = "/Users/Stephen/Downloads/book_10/EPUB/2893.xhtml"
+	fileContent, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		logs.Errorf("Failed to read file, the error is %v", err)
 		return
@@ -98,7 +100,7 @@ func regexpMatch() {
 	reg = regexp.MustCompile(pattern)
 
 	strContent := string(fileContent)
-	logs.Debugf("The file content is %s", strContent)
+	//logs.Debugf("The file content is %s", strContent)
 	result := reg.FindAllSubmatchIndex(fileContent, -1) //.FindAllStringIndex(strContent, -1)
 	logs.Debugf("The result is %v", result)
 	for _, item := range result {
