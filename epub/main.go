@@ -11,12 +11,14 @@ var (
 	name    string
 	srcDir  string
 	destDir string
+	key     string
 )
 
 func parseCmdLineArgs() {
 	flag.StringVar(&name, "name", "", "The name of the epub file")
 	flag.StringVar(&srcDir, "src", "", `The src directory of the epub file`)
 	flag.StringVar(&destDir, "dest", "", "The destination directory for the generated epub file")
+	flag.StringVar(&key, "key", "", "The key for encryption content")
 	flag.Parse()
 }
 
@@ -34,7 +36,7 @@ func main() {
 		destDir = srcDir
 	}
 	ef := epub_file.EPubFile{}
-	if err := ef.Create(name, "", srcDir, destDir); err != nil {
+	if err := ef.Create(name, key, srcDir, destDir); err != nil {
 		logs.Errorf("Failed to create epub file generator, the error is %v", err)
 		return
 	}
